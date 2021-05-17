@@ -4,10 +4,11 @@ require_once("../classes/Folder.class.php");
 require_once("../classes/File.class.php");
 require_once("../classes/FileSystem.class.php");
 
-$dir = instantiate_dir("..\\images\\", "cute_cats\\");
+$dir = instantiate_dir("..\\", "images\\");
+$saveTo = instantiate_dir("..\\cat_storage\\", "tabbys\\");
 $file = instantiate_file($dir, "cat_3.gif");
 $fileSystem = new FileSystem();
-$fileSystem->createFile($file, $dir);
+$fileSystem->createFile($file, $saveTo);
 $fileSystem->renameFile($file, "adorable.gif");
 
 //$fileSystem->createDirectory($dir);

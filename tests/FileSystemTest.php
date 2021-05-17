@@ -44,9 +44,13 @@ class FileSystemTest extends TestCase {
         $fileSystem->renameFile($file, "cute_cat.gif");
         self::assertTrue(is_file("..\\test\\cats\\cute_cat.gif"));
 
-//        # Delete a file
-//        $fileSystem->deleteFile($file);
-//        self::assertTrue(!is_file("..\\test\\cats\\cute_cat.gif"));
+        # Delete a file
+        $fileDeletion = $fileSystem->deleteFile($file);
+        self::assertEquals(1, $fileDeletion);
+        $remakeCate = new File();
+        $remakeCate->setParentDirectory($fileDir);
+        $remakeCate->setName("cat_1.gif");
+        $fileSystem->createFile($remakeCate, $saveDir);
     }
 
     public function test_create_root_directory()
@@ -120,16 +124,19 @@ class FileSystemTest extends TestCase {
         $dir->setPath("..\\");
         $dir->setName("test");
         $fileSystem = new FileSystem();
-        self::assertContains("..\\test\\cats\\cute_cat.gif", $fileSystem->getFiles($dir));
+        self::assertContains("..\\test\\cats\\cat_1.gif", $fileSystem->getFiles($dir));
     }
 
-//    public function test_delete_directory()
-//    {
-//        $dir = new Folder();
-//        $dir->setPath("..\\");
-//        $dir->setName("test");
-//        $fileSystem = new FileSystem();
-//        $fileSystem->deleteDirectory($dir);
-//        self::assertTrue(!is_dir("../test"));
-//    }
+    public function test_delete_directory()
+    {
+        $dir = new Folder();
+        $dir->setPath("..\\test\\");
+        $dir->setName("cats");
+        $fileSystem = new FileSystem();
+        $fileSystem->deleteDirectory($dir);
+        $dir->setName("test_root_dir");
+        $fileSystem->deleteDirectory($dir);
+        self::assertTrue(!is_dir("..\\test\\cats"));
+        self::assertTrue(!is_dir("..\\test\\test_root_dir"));
+    }
 }

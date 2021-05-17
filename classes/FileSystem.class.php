@@ -23,14 +23,14 @@ class FileSystem implements FileSystemInterface
      */
     public function createFile(FileInterface $file, DirectoryInterface $parent)
     {
-        $save_location = $parent->getPath() . $parent->getName();
+        $saveLocation = $parent->getPath() . $parent->getName();
         $this->createDirectory($parent);
         $cat = fopen($file->getPath() . $file->getName(), "r");
-        if (file_exists($save_location . $file->getName())){
+        if (file_exists($saveLocation . $file->getName())){
             echo "This file already exists" . "\n";
         }
         else{
-            file_put_contents($save_location . $file->getName(), $cat);
+            file_put_contents($saveLocation . $file->getName(), $cat);
             $file->setParentDirectory($parent);
             echo "File successfully created! Meow!" . "\n";
         }
