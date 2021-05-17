@@ -11,4 +11,5 @@ class DirectoryInterfaceTest extends TestCase {
         $stub = $this->createMock(DirectoryInterface::class);
         $this->assertTrue($stub instanceof DirectoryInterface);
     }
+
 }

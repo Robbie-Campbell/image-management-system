@@ -3,9 +3,9 @@
     "description": "3 Sided Cube PHP Task",
     "type": "project",
     "require-dev": {
-        "phpunit/phpunit": "^6.4"
+        "phpunit/phpunit": "9.5",
+        "ext-gd": "*"
     },
-    "require": {},
     "autoload": {
         "psr-4": {
             "Tsc\\CatStorageSystem\\": "src/"
@@ -13,7 +13,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tsc\\CatStorageSystem\\Tests\\": "tests/"
+            "Tsc\\CatStorageSystem\\Tests\\": "tests/",
+            "Tsc\\CatStorageSystem\\classes\\": "classes/"
         }
     }
 }

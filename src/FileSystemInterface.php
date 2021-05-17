@@ -43,12 +43,11 @@ interface FileSystemInterface
 
   /**
    * @param DirectoryInterface $directory
-   * @param DirectoryInterface $parent
    *
    * @return DirectoryInterface
    */
   public function createDirectory(
-    DirectoryInterface $directory, DirectoryInterface $parent
+    DirectoryInterface $directory
   );
 
   /**
