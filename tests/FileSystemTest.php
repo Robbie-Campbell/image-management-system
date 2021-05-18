@@ -143,17 +143,6 @@ class FileSystemTest extends TestCase {
         self::assertEquals($this->fileSystem->getDirectorySize($dir), 21230642);
     }
 
-    public function test_get_directories()
-    {
-        $dir = $this->create_save_directory("cat\\main");
-        $this->fileSystem->createDirectory($dir);
-        $dir->setName("/cat2");
-        $this->fileSystem->createDirectory($dir);
-        $dir->setName("/test");
-        $this->fileSystem->createDirectory($dir);
-        self::assertContains("/test", $this->fileSystem->getDirectories($dir));
-    }
-
     public function test_get_files()
     {
         $file = $this->create_sample_file("cat_1.gif");
