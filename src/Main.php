@@ -4,50 +4,13 @@ require_once("../classes/Folder.class.php");
 require_once("../classes/File.class.php");
 require_once("../classes/FileSystem.class.php");
 
-$dir = instantiate_dir("..\\", "images\\");
-$saveTo = instantiate_dir("..\\cat_storage\\", "tabbys\\");
-$file = instantiate_file($dir, "cat_3.gif");
+create_file_group("very_cute\\");
+//rename_file_group("cute\\");
+//delete_file_group("cute\\");
+update_file_group("cute\\");
+
+$dir = instantiate_dir("..\\cat_storage\\", "");
 $fileSystem = new FileSystem();
-$fileSystem->createFile($file, $saveTo);
-$fileSystem->renameFile($file, "adorable.gif");
-
-//$fileSystem->createDirectory($dir);
-//$file->setSize(200);
-//$fileSystem->updateFile($file);
-
-get_directory_information($dir, $fileSystem);
-
-
-//# Create a sample directory
-//$directory = new DirectoryClass();
-//$directory->setPath("..\\images\\");
-//$directory->setName("the_cutest_cats\\");
-//echo $directory->getPath() . $directory->getName() . "\n";
-//
-//# Create a nested directory
-//$nested_dir = new DirectoryClass();
-//$nested_dir->setPath("..\\images\\cute_cats\\");
-//$nested_dir->setName("tabby\\");
-//echo $nested_dir->getPath() . $nested_dir->getName() . "\n";
-//
-//# Copy one of the cat files
-//$file = new File();
-//$file->setParentDirectory($directory);
-//$file->setName("sweetie.gif");
-//print_r($file->getSize());
-
-# Create a file
-
-//$file_system->updateFile($file);
-//$file_system->createFile($file, $directory);
-//$file_system->renameFile($file, "sweetie.gif");
-//$file->setName("cat_2.gif");
-//$file_system->createFile($file, $directory);
-//
-//# Rename a file
-//$file_system->renameFile($file, "cutie.gif");
-//echo $file_system->deleteDirectory($directory);
-//$file_system->renameDirectory($directory, "the_cutest_cats");
 get_directory_information($dir, $fileSystem);
 
 function instantiate_file(Folder $directory, string $name)
@@ -56,6 +19,56 @@ function instantiate_file(Folder $directory, string $name)
     $file->setParentDirectory($directory);
     $file->setName($name);
     return $file;
+}
+
+function create_file_group(string $location)
+{
+    $dir = instantiate_dir("..\\", "images\\");
+    $saveTo = instantiate_dir("..\\cat_storage\\", $location);
+    $fileSystem = new FileSystem();
+    $file = instantiate_file($dir, "cat_1.gif");
+    $fileSystem->createFile($file, $saveTo);
+    $file = instantiate_file($dir, "cat_2.gif");
+    $fileSystem->createFile($file, $saveTo);
+    $file = instantiate_file($dir, "cat_3.gif");
+    $fileSystem->createFile($file, $saveTo);
+}
+
+function rename_file_group(string $location)
+{
+    $dir = instantiate_dir("..\\cat_storage\\", $location);
+    $file = instantiate_file($dir, "cat_1.gif");
+    $fileSystem = new FileSystem();
+    $fileSystem->renameFile($file, "cute.gif");
+    $file = instantiate_file($dir, "cat_2.gif");
+    $fileSystem->renameFile($file, "sweetie.gif");
+    $file = instantiate_file($dir, "cat_3.gif");
+    $fileSystem->renameFile($file, "adorable.gif");
+}
+
+function delete_file_group(string $location)
+{
+    $dir = instantiate_dir("..\\cat_storage\\", $location);
+    $fileSystem = new FileSystem();
+    $fileSystem->deleteDirectory($dir);
+}
+
+function update_file_group(string $location)
+{
+    $dir = instantiate_dir("..\\cat_storage\\", $location);
+    $file = instantiate_file($dir, "cat_1.gif");
+    $file->setModifiedTime(new DateTime());
+    $file->setSize(200);
+    $fileSystem = new FileSystem();
+    $fileSystem->updateFile($file);
+    $file = instantiate_file($dir, "cat_2.gif");
+    $file->setModifiedTime(new DateTime());
+    $file->setSize(200);
+    $fileSystem->updateFile($file);
+    $file = instantiate_file($dir, "cat_2.gif");
+    $file->setModifiedTime(new DateTime());
+    $file->setSize(200);
+    $fileSystem->updateFile($file);
 }
 
 function instantiate_dir(string $base_path, string $name)

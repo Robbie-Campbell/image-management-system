@@ -17,6 +17,7 @@ class FileSystem implements FileSystemInterface
 {
     /**
      * Gets an image of a cat in the $file parameter, then saves it in the path of the $parent.
+     *
      * @param FileInterface $file The file containing the image of the cat
      * @param DirectoryInterface $parent The place where the file will be saved
      * @return FileInterface|void
@@ -38,6 +39,7 @@ class FileSystem implements FileSystemInterface
 
     /**
      * Takes an already saved file then updates both the "updated time" and the size of the image file.
+     *
      * @param FileInterface $file Contains the changed file information
      * @return FileInterface|void
      */
@@ -252,8 +254,8 @@ class FileSystem implements FileSystemInterface
         $dirs = array_filter(glob($directory->getPath() . $directory->getName() . '*'), 'is_dir');
         foreach($dirs as $dir) {
             $temp = new Folder();
-            $temp->setPath($dir . DIRECTORY_SEPARATOR);
-            $temp->setName("");
+            $temp->setPath($dir);
+            $temp->setName(DIRECTORY_SEPARATOR);
             $sub = $this->getDirectories($temp);
             array_push($dirs, ...$sub);
         }
