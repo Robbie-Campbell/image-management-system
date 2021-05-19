@@ -1,22 +1,17 @@
 <?php
 
-namespace Tsc\CatStorageSystem;
+namespace Tsc\CatStorageSystem\Tests;
 
-require_once("../classes/File.class.php");
-require_once("../classes/Folder.class.php");
-require_once("../classes/FileSystem.class.php");
-
-use File;
-use FileSystem;
-use Folder;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use Tsc\CatStorageSystem\File;
+use Tsc\CatStorageSystem\FileSystem;
+use Tsc\CatStorageSystem\Directory;
 
 class FileSystemTest extends TestCase {
 
-    private $root;
-
-    private $fileSystem;
+    private \org\bovigo\vfs\vfsStreamDirectory $root;
+    private FileSystem $fileSystem;
 
     protected function setUp(): void
     {
@@ -26,20 +21,18 @@ class FileSystemTest extends TestCase {
 
     public function create_sample_file(string $fileName)
     {
-        $fileDir = new Folder();
+        $fileDir = new Directory();
         $fileDir->setPath("..\\");
         $fileDir->setName("images");
-
         $file = new File();
         $file->setParentDirectory($fileDir);
         $file->setName($fileName);
-
         return $file;
     }
 
     public function create_save_directory(string $saveDirName)
     {
-        $saveDir = new Folder();
+        $saveDir = new Directory();
         $saveDir->setPath($this->root->url());
         $saveDir->setName(DIRECTORY_SEPARATOR . $saveDirName . DIRECTORY_SEPARATOR);
         return $saveDir;
@@ -61,8 +54,8 @@ class FileSystemTest extends TestCase {
         $time = new \DateTime();
         $file->setModifiedTime($time);
         $this->fileSystem->updateFile($file);
-        self::assertEquals($file->getModifiedTime(), $time);
-        self::assertEquals($file->getSize(), 200);
+        self::assertEquals($time, $file->getModifiedTime());
+        self::assertEquals(200, $file->getSize());
 
     }
 
@@ -111,12 +104,16 @@ class FileSystemTest extends TestCase {
     {
         $dir = $this->create_save_directory("cat");
         $this->fileSystem->createDirectory($dir);
-        $dir->setName("/cat2");
+        $dir->setName("/cat2/");
         $this->fileSystem->createDirectory($dir);
-        $dir->setName("/test");
+        $dir->setName("/test/");
         $this->fileSystem->createDirectory($dir);
+        $dir->setName("/test2/");
+        $dir->setPath($this->root->url() . "\\cat3\\base");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setPath($this->root->url());
         $dir->setName("/");
-        self::assertEquals($this->fileSystem->getDirectoryCount($dir), 3);
+        self::assertEquals(6, $this->fileSystem->getDirectoryCount($dir));
     }
 
     public function test_file_count()
@@ -128,7 +125,7 @@ class FileSystemTest extends TestCase {
         $this->fileSystem->createFile($file, $dir);
         $file = $this->create_sample_file("cat_3.gif");
         $this->fileSystem->createFile($file, $dir);
-        self::assertEquals($this->fileSystem->getFileCount($dir), 3);
+        self::assertEquals(3, $this->fileSystem->getFileCount($dir));
     }
 
     public function test_get_directory_size()
@@ -140,7 +137,7 @@ class FileSystemTest extends TestCase {
         $this->fileSystem->createFile($file, $dir);
         $file = $this->create_sample_file("cat_3.gif");
         $this->fileSystem->createFile($file, $dir);
-        self::assertEquals($this->fileSystem->getDirectorySize($dir), 21230642);
+        self::assertEquals(21230642, $this->fileSystem->getDirectorySize($dir));
     }
 
     public function test_get_files()
@@ -152,16 +149,26 @@ class FileSystemTest extends TestCase {
         $this->fileSystem->createFile($file, $dir);
         $file = $this->create_sample_file("cat_3.gif");
         $this->fileSystem->createFile($file, $dir);
-        self::assertContains("vfs://root\\cats\\cat_1.gif", $this->fileSystem->getFiles($dir));
-        self::assertContains("vfs://root\\cats\\cat_2.gif", $this->fileSystem->getFiles($dir));
-        self::assertContains("vfs://root\\cats\\cat_3.gif", $this->fileSystem->getFiles($dir));
+        $arrayValues = $this->fileSystem->getFiles($dir);
+        self::assertEquals("cat_1.gif", $arrayValues[0]->getName());
+        self::assertEquals("cat_2.gif", $arrayValues[1]->getName());
+        self::assertEquals("cat_3.gif", $arrayValues[2]->getName());
     }
 
     public function test_delete_directory()
     {
-        $dir = $this->create_save_directory("/cat");
+        $dir = $this->create_save_directory("cat");
         $this->fileSystem->createDirectory($dir);
+        $dir->setName("/cat2/");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("/test/");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("/test2/");
+        $dir->setPath($this->root->url() . "\\cat3\\base");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setPath($this->root->url());
+        $dir->setName("/");
         $this->fileSystem->deleteDirectory($dir);
-        $this->assertTrue(!$this->root->hasChild('/cat'));
+        $this->assertFileDoesNotExist($this->root->url() . "cat");
     }
 }

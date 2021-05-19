@@ -1,38 +1,17 @@
 <?php
 
-require_once("../classes/Folder.class.php");
-require_once("../classes/File.class.php");
-require_once("../classes/FileSystem.class.php");
-
-# Create a set of files
-create_file_group("very_cute\\");
-
-# Rename the default set of files
-//rename_file_group("cute\\");
-
-# Delete the whole file group
-//delete_file_group("cute\\");
-
-# Update the size and modification time of the file group
-update_file_group("cute\\");
-
-# Get all information about this new directory (size, number of files etc.)
-$dir = instantiate_dir("..\\cat_storage\\", "");
-$fileSystem = new FileSystem();
-get_directory_information($dir, $fileSystem);
-
-# Rename the directory
-$dir->setName("cute\\");
-$fileSystem->renameDirectory($dir, "\\super_cute\\");
+use Tsc\CatStorageSystem\File;
+use Tsc\CatStorageSystem\FileSystem;
+use Tsc\CatStorageSystem\Directory;
 
 /**
  * Create an instance of a file
  *
- * @param Folder $directory The path to the file
+ * @param Directory $directory The path to the file
  * @param string $name The name of the file
  * @return File
  */
-function instantiate_file(Folder $directory, string $name)
+function instantiate_file(Directory $directory, string $name)
 {
     $file = new File();
     $file->setParentDirectory($directory);
@@ -44,6 +23,7 @@ function instantiate_file(Folder $directory, string $name)
  * Save the file into a new directory.
  *
  * @param string $location Name a directory to save the file into
+ * @throws Exception
  */
 function create_file_group(string $location)
 {
@@ -62,6 +42,7 @@ function create_file_group(string $location)
  * Rename all of the files in a given directory.
  *
  * @param string $location The name of the files' directory
+ * @throws Exception
  */
 function rename_file_group(string $location)
 {
@@ -115,11 +96,11 @@ function update_file_group(string $location)
  *
  * @param string $basePath The path to the directory.
  * @param string $name The name of the last directory in the path.
- * @return Folder
+ * @return Directory
  */
 function instantiate_dir(string $basePath, string $name)
 {
-    $directory = new Folder();
+    $directory = new Directory();
     $directory->setPath($basePath);
     $directory->setName($name);
     return $directory;
@@ -133,10 +114,10 @@ function instantiate_dir(string $basePath, string $name)
  * - The names of all dirs
  * - The names of all files
  *
- * @param Folder $directory The directory to gather information on.
+ * @param Directory $directory The directory to gather information on.
  * @param FileSystem $fileSystem The system which will gather all of the information.
  */
-function get_directory_information(Folder $directory, FileSystem $fileSystem)
+function get_directory_information(Directory $directory, FileSystem $fileSystem)
 {
     echo "Total Number of sub directories:\n";
     echo $fileSystem->getDirectoryCount($directory) . "\n\n";

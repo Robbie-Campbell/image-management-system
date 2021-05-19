@@ -1,19 +1,17 @@
 <?php
 
-require_once("../src/DirectoryInterface.php");
-
-use Tsc\CatStorageSystem\DirectoryInterface;
+namespace Tsc\CatStorageSystem;
 
 /**
  * Class Folder
  *
  * The class that handles the directory methods
  */
-class Folder implements DirectoryInterface
+class Directory implements DirectoryInterface
 {
 
     private string $name;
-    private DateTimeInterface $created;
+    private \DateTimeInterface $created;
     private string $path;
 
     /**
@@ -21,7 +19,7 @@ class Folder implements DirectoryInterface
      */
     public function __construct()
     {
-        $this->setCreatedTime(new DateTime());
+        $this->setCreatedTime(new \DateTime());
     }
 
     /**
@@ -38,17 +36,18 @@ class Folder implements DirectoryInterface
      * Sets the name of the final sub-directory.
      *
      * @param string $name The final sub-directory
-     * @return Folder|void
+     * @return Directory
      */
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * Get the time that the folder was created.
      *
-     * @return DateTimeInterface|false|string The string value of the created time of the folder
+     * @return \DateTimeInterface
      */
     public function getCreatedTime()
     {
@@ -58,12 +57,13 @@ class Folder implements DirectoryInterface
     /**
      * Set the time that the folder was created.
      *
-     * @param DateTimeInterface $created The time of creation
-     * @return Folder|void
+     * @param \DateTimeInterface $created The time of creation
+     * @return Directory
      */
-    public function setCreatedTime(DateTimeInterface $created)
+    public function setCreatedTime(\DateTimeInterface $created)
     {
         $this->created = $created;
+        return $this;
     }
 
     /**
@@ -80,11 +80,22 @@ class Folder implements DirectoryInterface
      * Set the path of the directory.
      *
      * @param string $path The path of the directory
-     * @return Folder|void
+     * @return Directory
      */
     public function setPath($path)
     {
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * Gets the path and name of the directory
+     *
+     * @return string path and name of dir.
+     */
+    public function getFullPath()
+    {
+        return $this->getPath() . $this->getName();
     }
 }
 

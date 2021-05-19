@@ -1,10 +1,6 @@
 <?php
 
-require_once("../src/DirectoryInterface.php");
-require_once("../src/FileInterface.php");
-
-use Tsc\CatStorageSystem\DirectoryInterface;
-use Tsc\CatStorageSystem\FileInterface;
+namespace Tsc\CatStorageSystem;
 
 /**
  * Class File
@@ -16,16 +12,16 @@ class File implements FileInterface
 
     private string $name;
     private string $size;
-    private DateTimeInterface $created;
-    private DateTimeInterface $modified;
-    private DirectoryInterface $parent_dir;
+    private \DateTimeInterface $created;
+    private \DateTimeInterface $modified;
+    private DirectoryInterface $parentDir;
 
     /**
      * File constructor.
      */
     public function __construct()
     {
-        $this->setCreatedTime(new DateTime());
+        $this->setCreatedTime(new \DateTime());
     }
 
     /**
@@ -42,17 +38,18 @@ class File implements FileInterface
      * Set the name of this file
      *
      * @param string $name The new name of the file.
-     * @return File|void
+     * @return File
      */
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * Get the size of the image stored in the file.
      *
-     * @return array|false|int The size of the image provided
+     * @return int The size of the image provided
      */
     public function getSize()
     {
@@ -73,7 +70,7 @@ class File implements FileInterface
     /**
      * Gets the time that the file was created.
      *
-     * @return false|string|\Tsc\CatStorageSystem\DateTime Get the time that the file has been created.
+     * @return \DateTimeInterface Get the time that the file has been created.
      */
     public function getCreatedTime()
     {
@@ -83,18 +80,19 @@ class File implements FileInterface
     /**
      * Set the time of creation for the file
      *
-     * @param DateTimeInterface $created The created time
-     * @return File|void
+     * @param \DateTimeInterface $created The created time
+     * @return File
      */
-    public function setCreatedTime(DateTimeInterface $created)
+    public function setCreatedTime(\DateTimeInterface $created)
     {
         $this->created = $created;
+        return $this;
     }
 
     /**
      * Get the time that the file has been modified.
      *
-     * @return DateTimeInterface|false|string The modification time
+     * @return \DateTimeInterface|false|string The modification time
      */
     public function getModifiedTime()
     {
@@ -104,12 +102,13 @@ class File implements FileInterface
     /**
      * When the file is updated or modified, set this to the current time.
      *
-     * @param DateTimeInterface $modified The time of modification
-     * @return File|void
+     * @param \DateTimeInterface $modified The time of modification
+     * @return File
      */
-    public function setModifiedTime(DateTimeInterface $modified)
+    public function setModifiedTime(\DateTimeInterface $modified)
     {
         $this->modified = $modified;
+        return $this;
     }
 
     /**
@@ -119,18 +118,19 @@ class File implements FileInterface
      */
     public function getParentDirectory()
     {
-        return $this->parent_dir;
+        return $this->parentDir;
     }
 
     /**
      * Set the directory of this file.
      *
      * @param DirectoryInterface $parent The parent directory of this file
-     * @return File|void
+     * @return File
      */
     public function setParentDirectory(DirectoryInterface $parent)
     {
-        $this->parent_dir = $parent;
+        $this->parentDir = $parent;
+        return $this;
     }
 
     /**
@@ -140,6 +140,11 @@ class File implements FileInterface
      */
     public function getPath()
     {
-        return $this->parent_dir->getPath() . $this->parent_dir->getName() . "\\";
+        return $this->parentDir->getPath() . $this->parentDir->getName() . "\\";
+    }
+
+    public function getFullName()
+    {
+        return $this->getPath() . $this->getName();
     }
 }

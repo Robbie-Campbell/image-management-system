@@ -1,13 +1,10 @@
 <?php
 
-namespace Tsc\CatStorageSystem;
+namespace Tsc\CatStorageSystem\Tests;
 
-require_once("../classes/File.class.php");
-require_once("../classes/Folder.class.php");
-
-use File;
-use Folder;
 use PHPUnit\Framework\TestCase;
+use Tsc\CatStorageSystem\File;
+use Tsc\CatStorageSystem\Directory;
 
 class FileTest extends TestCase {
 
@@ -34,7 +31,7 @@ class FileTest extends TestCase {
     public function test_parent_directory(){
         $file = new File();
         $file->setName("file.gif");
-        $dir = new Folder();
+        $dir = new Directory();
         $dir->setPath("test\\test2\\");
         $dir->setName("end");
         $file->setParentDirectory($dir);

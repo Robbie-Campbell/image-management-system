@@ -41,4 +41,6 @@ interface DirectoryInterface
    * @return $this
    */
   public function setPath($path);
+
+  public function getFullPath();
 }

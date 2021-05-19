@@ -1,8 +1,9 @@
 <?php
 
-namespace Tsc\CatStorageSystem;
+namespace Tsc\CatStorageSystem\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Tsc\CatStorageSystem\FileSystemInterface;
 
 class FileSystemInterfaceTest extends TestCase {
 

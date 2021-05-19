@@ -10,12 +10,14 @@
     "autoload": {
         "psr-4": {
             "Tsc\\CatStorageSystem\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Tsc\\CatStorageSystem\\Tests\\": "tests/",
-            "Tsc\\CatStorageSystem\\classes\\": "classes/"
+            "Tsc\\CatStorageSystem\\Tests\\": "tests/"
         }
     }
 }
