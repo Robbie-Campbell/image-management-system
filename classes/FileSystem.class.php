@@ -38,19 +38,13 @@ class FileSystem implements FileSystemInterface
     }
 
     /**
-     * Takes an already saved file then updates both the "updated time" and the size of the image file.
+     * Takes an already saved file then updates the modified time
      *
      * @param FileInterface $file Contains the changed file information
      * @return FileInterface|void
      */
     public function updateFile(FileInterface $file)
     {
-        list($width, $height) = getimagesize($file->getPath() . $file->getName());
-        $src = imagecreatefromgif($file->getPath() . $file->getName());
-        $dst = imagecreatetruecolor($file->getSize(), $file->getSize());
-        imagecolortransparent($dst);
-        imagecopyresized($dst, $src, 0, 0, 0, 0, $file->getSize(), $file->getSize(), $width, $height);
-        imagegif($dst, $file->getPath() . $file->getName());
         touch($file->getPath() . $file->getName(), $file->getModifiedTime()->getTimestamp());
     }
 
