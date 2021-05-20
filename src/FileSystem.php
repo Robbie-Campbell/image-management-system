@@ -70,7 +70,7 @@ class FileSystem implements FileSystemInterface
      * Deletes a given file and return whether it was successful.
      *
      * @param FileInterface $file File to be deleted
-     * @return bool|int Success status
+     * @return bool Success status
      */
     public function deleteFile(FileInterface $file)
     {
@@ -86,7 +86,7 @@ class FileSystem implements FileSystemInterface
      * Separates the path into a list of individual directories then creates them if they do not exist.
      *
      * @param DirectoryInterface $directory Contains the path to be created
-     * @return DirectoryInterface|void
+     * @return DirectoryInterface
      */
     public function createRootDirectory(DirectoryInterface $directory)
     {
@@ -126,6 +126,14 @@ class FileSystem implements FileSystemInterface
     public function deleteDirectory(DirectoryInterface $directory)
     {
         $dirs = $this->getDirectories($directory);
+        if (count($dirs) < 1) {
+            $files = $this->getFiles($directory);
+            foreach ($files as $file) {
+                $this->deleteFile($file);
+            }
+            rmdir($directory->getFullPath());
+            return true;
+        }
         foreach ($dirs as $dir) {
             $files = $this->getFiles($dir);
             foreach ($files as $file) {
@@ -198,7 +206,7 @@ class FileSystem implements FileSystemInterface
      * This method gets all of the directory names in a given directory and returns them in an arr.
      *
      * @param DirectoryInterface $directory The directory to be checked
-     * @return array|false|DirectoryInterface[] All the sub-directory names
+     * @return DirectoryInterface[] All the sub-directory names
      */
     public function getDirectories(DirectoryInterface $directory)
     {
@@ -224,7 +232,7 @@ class FileSystem implements FileSystemInterface
      * This method gets all of the file names in a given directory and returns them in an arr.
      *
      * @param DirectoryInterface $directory The directory to be checked
-     * @return array|FileInterface[] All of the contained files
+     * @return FileInterface[] All of the contained files
      */
     public function getFiles(DirectoryInterface $directory)
     {

@@ -155,6 +155,24 @@ class FileSystemTest extends TestCase {
         self::assertEquals("cat_3.gif", $arrayValues[2]->getName());
     }
 
+    public function test_get_directories()
+    {
+        $dir = $this->create_save_directory("cat");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("\\cat2\\");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("\\test\\");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("\\test2\\");
+        $this->fileSystem->createDirectory($dir);
+        $dir->setName("/");
+        $arrayValues = $this->fileSystem->getDirectories($dir);
+        self::assertEquals("cat\\", $arrayValues[0]->getName());
+        self::assertEquals("cat2\\", $arrayValues[1]->getName());
+        self::assertEquals("test\\", $arrayValues[2]->getName());
+        self::assertEquals("test2\\", $arrayValues[3]->getName());
+    }
+
     public function test_delete_directory()
     {
         $dir = $this->create_save_directory("cat");
