@@ -86,16 +86,13 @@ function update_file_group(string $location)
     $dir = instantiate_dir("cat_storage\\", $location);
     $file = instantiate_file($dir, "cat_1.gif");
     $file->setModifiedTime(new DateTime());
-    $file->setSize(200);
     $fileSystem = new FileSystem();
     $fileSystem->updateFile($file);
     $file = instantiate_file($dir, "cat_2.gif");
     $file->setModifiedTime(new DateTime());
-    $file->setSize(200);
     $fileSystem->updateFile($file);
     $file = instantiate_file($dir, "cat_3.gif");
     $file->setModifiedTime(new DateTime());
-    $file->setSize(200);
     $fileSystem->updateFile($file);
 }
 
